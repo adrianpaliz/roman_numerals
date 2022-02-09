@@ -1,29 +1,29 @@
-tuple_roman_values = [    
-    (1000, 'M'),
-    (900, 'CM'),
-    (500, 'D'),
-    (400, 'CD'),
-    (100, 'C'),
-    (90, 'XC'),
-    (50, 'L'),
-    (10, 'X'),
-    (9, 'IX'),
-    (5, 'V'),
-    (4, 'IV'),
-    (1, 'I')
-]
+dictionary_roman_values = {
+    1: 'I',
+    4: 'IV',
+    5: 'V',
+    9: 'IX',
+    10: 'X',
+    50: 'L',
+    90: 'XC',
+    100: 'C',
+    400: 'CD',
+    500: 'D',
+    900: 'CM',
+    1000: 'M'
+}
 
 def arabic_to_roman(number):    
     roman = ''
     remainder = 1
 
     while remainder != 0:        
-        for value, simbol in tuple_roman_values:
+        for value in sorted(dictionary_roman_values.keys(), reverse = True):
             if number >= value:
                 break    
         quotient = number // value
         remainder = number % value
-        roman += quotient * simbol         
+        roman += quotient * dictionary_roman_values[value]        
         number = remainder    
     
     return roman
