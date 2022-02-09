@@ -23,6 +23,9 @@ inverted_dictionary_roman_values = {
     'M': 1000
     }
 
+class Roman_error(Exception):
+    pass
+
 def number_validation(number):
     if not isinstance(number, int):
         raise TypeError(f"{number} mush be a integer")
@@ -51,9 +54,24 @@ def roman_to_arabic(string):
     for simbol in range(len(string) - 1):
         letter = string[simbol]
         next = string[simbol + 1]
+
+        # Repetitions tester
+        if letter == next:
+            repetitions_counter += 1
+        else:
+            repetitions_counter = 0
+        
+        if letter in 'VLD' and repetitions_counter > 0:
+            raise Roman_error(f"Syntax error. Too many repetitions of {letter}")
+        elif repetitions_counter > 2:
+            raise Roman_error(f"Syntax error. Too many repetitions of {letter}")
+
         if inverted_dictionary_roman_values[letter] >= inverted_dictionary_roman_values[next]:
             result += inverted_dictionary_roman_values[letter]
         else:
-            result -= inverted_dictionary_roman_values[letter]        
+            if letter in 'VLD':
+                raise Roman_error(f"Syntax error. {letter} can't subtract")
+            result -= inverted_dictionary_roman_values[letter]    
+                
     result += inverted_dictionary_roman_values[string[-1]]
     return result
