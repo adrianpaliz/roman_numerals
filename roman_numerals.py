@@ -23,7 +23,14 @@ inverted_dictionary_roman_values = {
     'M': 1000
     }
 
-def arabic_to_roman(number):  
+def number_validation(number):
+    if not isinstance(number, int):
+        raise TypeError(f"{number} mush be a integer")
+    if number <= 0:
+        raise ValueError(f"{number} mush be a positive integer")
+
+def arabic_to_roman(number):
+    number_validation(number)  
     roman = ''
     remainder = 1
 
@@ -47,6 +54,6 @@ def roman_to_arabic(string):
         if inverted_dictionary_roman_values[letter] >= inverted_dictionary_roman_values[next]:
             result += inverted_dictionary_roman_values[letter]
         else:
-            result -= inverted_dictionary_roman_values[letter]
+            result -= inverted_dictionary_roman_values[letter]        
     result += inverted_dictionary_roman_values[string[-1]]
     return result
