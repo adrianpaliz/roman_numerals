@@ -13,7 +13,17 @@ dictionary_roman_values = {
     1000: 'M'
 }
 
-def arabic_to_roman(number):    
+inverted_dictionary_roman_values = {
+    'I': 1,
+    'V': 5,
+    'X': 10,
+    'L': 50,
+    'C': 100,
+    'D': 500,
+    'M': 1000
+    }
+
+def arabic_to_roman(number):  
     roman = ''
     remainder = 1
 
@@ -28,4 +38,15 @@ def arabic_to_roman(number):
     
     return roman
 
-print(arabic_to_roman(36))
+def roman_to_arabic(string):
+    result = 0
+    
+    for simbol in range(len(string) - 1):
+        letter = string[simbol]
+        next = string[simbol + 1]
+        if inverted_dictionary_roman_values[letter] >= inverted_dictionary_roman_values[next]:
+            result += inverted_dictionary_roman_values[letter]
+        else:
+            result -= inverted_dictionary_roman_values[letter]
+    result += inverted_dictionary_roman_values[string[-1]]
+    return result
