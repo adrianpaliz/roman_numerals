@@ -19,7 +19,7 @@ class Test_arabic_to_roman_functions(unittest.TestCase):
 
 class Test_roman_to_arabic_functions(unittest.TestCase):
     def test_roman_to_arabic_tree_repetitions_ok_without_VLD(self):
-        self.assertEqual(roman_to_arabic('XXX'), 30)
+        self.assertEqual(roman_to_arabic('III'), 3)
 
     def test_roman_to_arabic_tree_repetitions_error(self):
         with self.assertRaises(Roman_error):
@@ -43,4 +43,6 @@ class Test_roman_to_arabic_functions(unittest.TestCase):
 
     def test_roman_to_arabic_after_reppetittion_does_not_remain(self):
         with self.assertRaises(Roman_error):
-            roman_to_arabic('XXL')    
+            roman_to_arabic('XXL')
+
+        self.assertEqual(roman_to_arabic('XXIII'), 23)
