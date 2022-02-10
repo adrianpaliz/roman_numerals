@@ -1,4 +1,4 @@
-dictionary_roman_values = {
+roman_values = {
     1: 'I',
     4: 'IV',
     5: 'V',
@@ -13,7 +13,7 @@ dictionary_roman_values = {
     1000: 'M'
 }
 
-inverted_dictionary_roman_values = {
+inverted_roman_values = {
     'I': 1,
     'V': 5,
     'X': 10,
@@ -38,40 +38,41 @@ def arabic_to_roman(number):
     remainder = 1
 
     while remainder != 0:        
-        for value in sorted(dictionary_roman_values.keys(), reverse = True):
+        for value in sorted(roman_values.keys(), reverse = True):
             if number >= value:
                 break    
         quotient = number // value
         remainder = number % value
-        roman += quotient * dictionary_roman_values[value]        
+        roman += quotient * roman_values[value]        
         number = remainder    
     
     return roman
 
 def roman_to_arabic(string):
     result = 0
+    repetitions_counter = 0
     
-    for simbol in range(len(string) - 1):
-        letter = string[simbol]
-        next = string[simbol + 1]
+    for index in range(len(string) - 1):
+        letter = string[index]
+        next = string[index + 1]
 
         # Repetitions tester
         if letter == next:
             repetitions_counter += 1
+        elif inverted_roman_values[letter] < inverted_roman_values[next] and repetitions_counter > 0:
+            raise Roman_error(f"Syntax error. {letter} tree repetitions dont could subtract")
         else:
             repetitions_counter = 0
         
-        if letter in 'VLD' and repetitions_counter > 0:
-            raise Roman_error(f"Syntax error. Too many repetitions of {letter}")
-        elif repetitions_counter > 2:
+        if letter in 'VLD' and repetitions_counter > 0 or repetitions_counter > 2 :
             raise Roman_error(f"Syntax error. Too many repetitions of {letter}")
 
-        if inverted_dictionary_roman_values[letter] >= inverted_dictionary_roman_values[next]:
-            result += inverted_dictionary_roman_values[letter]
+        if inverted_roman_values[letter] >= inverted_roman_values[next]:
+            result += inverted_roman_values[letter]
         else:
             if letter in 'VLD':
                 raise Roman_error(f"Syntax error. {letter} can't subtract")
-            result -= inverted_dictionary_roman_values[letter]    
+            result -= inverted_roman_values[letter]    
                 
-    result += inverted_dictionary_roman_values[string[-1]]
+    result += inverted_roman_values[string[-1]]
     return result
