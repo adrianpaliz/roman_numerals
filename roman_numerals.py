@@ -62,41 +62,48 @@ def roman_to_arabic(string):
     repetitions_counter = 0
     string = string.upper()
     
+    # String = "(IV)CCCXXIX"
+    # print(string[0:4]) for debugging
+    if (string[0:4] == '(IV)'):
+        result += 4000
+        string = string[4:] # Ahora el string es CCCXXIX
+    # print(string) for debugging
+
     for index in range(len(string) - 1):
-        letter = string[index]
-        next_letter = string[index + 1]
-        letter_value = symbol_to_value(letter)
-        next_letter_value = symbol_to_value(next_letter)
-       
+        symbol = string[index]
+        next_symbol = string[index + 1]
+        symbol_value = symbol_to_value(symbol)
+        next_symbol_value = symbol_to_value(next_symbol)       
+
+
         # Repetitions tester
-        if letter == next_letter:
+        if symbol == next_symbol:
             repetitions_counter += 1
-        elif letter_value < next_letter_value and repetitions_counter > 0:
-            raise RomanError(f"Syntax error. {letter} repetitions before subtract")
+        elif symbol_value < next_symbol_value and repetitions_counter > 0:
+            raise RomanError(f"Syntax error. {symbol} repetitions before subtract")
         else:
             repetitions_counter = 0
        
-        print(repetitions_counter)
-        if letter in 'VLD' and repetitions_counter > 0:
-            raise RomanError(f"Syntax error. Too many repetitions of {letter}")        
+        if symbol in 'VLD' and repetitions_counter > 0:
+            raise RomanError(f"Syntax error. Too many repetitions of {symbol}")        
         elif repetitions_counter > 2:
-            raise RomanError(f"Syntax error. Too many repetitions of {letter}")
+            raise RomanError(f"Syntax error. Too many repetitions of {symbol}")
 
-        if letter_value >= next_letter_value:
+        if symbol_value >= next_symbol_value:
             #Always sum
-            result += letter_value
+            result += symbol_value
         else:
             # Subtraction tests
-            if letter in 'VLD':
-                raise RomanError(f"Syntax error. {letter} can't subtract")
-            elif letter == 'I' and next_letter not in ('XV'):
-                raise RomanError(f"Syntax error. {letter}{next_letter} not allowed")
-            elif letter == 'X' and next_letter not in ('LC'):
-                raise RomanError(f"Syntax error. {letter}{next_letter} not allowed")
-            elif letter == 'C' and next_letter not in ('DM'):
-                raise RomanError(f"Syntax error. {letter}{next_letter} not allowed")
+            if symbol in 'VLD':
+                raise RomanError(f"Syntax error. {symbol} can't subtract")
+            elif symbol == 'I' and next_symbol not in ('XV'):
+                raise RomanError(f"Syntax error. {symbol}{next_symbol} not allowed")
+            elif symbol == 'X' and next_symbol not in ('LC'):
+                raise RomanError(f"Syntax error. {symbol}{next_symbol} not allowed")
+            elif symbol == 'C' and next_symbol not in ('DM'):
+                raise RomanError(f"Syntax error. {symbol}{next_symbol} not allowed")
 
-            result -= letter_value   
+            result -= symbol_value   
                 
     result += symbol_to_value(string[-1])
     return result
